@@ -9,7 +9,7 @@
 
 
 #include <iostream>
-
+#include <vector>
 /**
  * pdf_solve
  * @param r, w std:: istream and ostream respectively
