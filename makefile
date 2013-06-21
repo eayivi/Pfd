@@ -1,4 +1,4 @@
-ll:
+all:
 	make PFD.zip
 
 clean:
