@@ -15,6 +15,10 @@
  * @param r, w std:: istream and ostream respectively
  *
  */
-bool pdf_solve(std::istream&, std::ostream&);
+void pfd_solve(std::istream&, std::ostream&);
+
+
+
+std::vector<std::vector<int> > pfd_read(std::istream&, int&, int&);
 
 #endif
