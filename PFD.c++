@@ -13,7 +13,7 @@ using namespace std;
 
 //read
 std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
-    cout << "In function read" << endl;
+//    cout << "In function read" << endl;
     // if(!r)
     //     return false;
     r >> m;
@@ -23,7 +23,7 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
     assert(n > 0);
     assert(m > 0);
 
-    cout << "n is " << n << " m is " << m << endl;
+//    cout << "n is " << n << " m is " << m << endl;
 
     std::vector<std::vector<int> > adj_matrix (n, std::vector<int>(n, 0));
 
@@ -57,14 +57,14 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
 // ------------
 
 void pfd_eval (std::vector<std::vector<int> > A, int n) {
-        cout << "n is " << n << endl;
-        cout << "Printing the matrix" << endl;
+//        cout << "n is " << n << endl;
+//        cout << "Printing the matrix" << endl;
         
-        for ( int j = 0; j< n ; j++ ) {
-            for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
-                std::cout << *it << ' ';
-            cout << endl;
-        }
+//        for ( int j = 0; j< n ; j++ ) {
+//            for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
+//                std::cout << *it << ' ';
+//            cout << endl;
+//        }
         std::vector<int> outputArray;
         for ( int j = 0; j< n ; j++ ) {
             if (A[j][0] == -1) continue;
@@ -77,24 +77,22 @@ void pfd_eval (std::vector<std::vector<int> > A, int n) {
                         A[k].at(j) = 0;
                     A[j][0]= -1;
                     j = 0;
-
                 }
             }
             
         }
-
+/*
         for ( int j = 0; j< n ; j++ ) {
             for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
                 std::cout << *it << ' ';
             cout << endl;
         }
+ */
 
-        cout << "Final output" << endl;
+//        cout << "Final output" << endl;
         for( std::vector<int>::const_iterator it = outputArray.begin(); it != outputArray.end(); ++it)
                 std::cout << *it << ' ';
-
-
-
+	cout << endl;
 }
 
 // print
@@ -106,8 +104,7 @@ void pfd_solve(istream& r, ostream& w){
     r >> n;
     int m; // M rules
         
-    // vector for the stupid solution
-    cout << "In function solve" << endl;
+//    cout << "In function solve" << endl;
 
 
     pfd_eval(pfd_read(r, n, m), n) ;
