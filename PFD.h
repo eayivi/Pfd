@@ -5,7 +5,7 @@
  */
  
 #ifndef PFD_h
-#def PFD_h
+#define PFD_h
 
 
 #include <iostream>
