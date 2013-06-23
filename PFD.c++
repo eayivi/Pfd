@@ -22,6 +22,7 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
     
     assert(n > 0);
     assert(m > 0);
+    int rules = m;
 
     cout << "n is " << n << " m is " << m << endl;
 
@@ -31,7 +32,7 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
     int vertex;
     int deps;   // number of dependencies per task as given in rule
     int value;
-    while (m > 0){
+    while (rules > 0){
         // cout << "In first while m =" << m << endl;
         r >> vertex;
         r >> deps;
@@ -42,7 +43,7 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
             adj_matrix[(vertex - 1)].at(value-1) = 1;
             --deps;
         }
-        --m; 
+        --rules; 
     }
 
 
@@ -56,18 +57,18 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
 // pfd_eval
 // ------------
 
-void pfd_eval (std::vector<std::vector<int> > A, int n) {
+std::vector<int> pfd_eval (std::vector<std::vector<int> > A, int n) {
        // cout << "n is " << n << endl;
        cout << "Printing the matrix" << endl;
         
-       for ( int j = 0; j< n ; j++ ) {
+       for ( int j = 0; j< n ; ++j ) {
            for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
                std::cout << *it << ' ';
            cout << endl;
        }
         std::vector<int> outputArray;
         std::vector<int>::const_iterator it;
-        for ( int j = 0; j< n ; j++ ) {
+        for ( int j = 0; j< n ; ++j ) {
             if (A[j][0] == -1) continue;
             for(it = A[j].begin(); it != A[j].end(); ++it) {
                 //std::cout << *it << ' ';
@@ -85,21 +86,24 @@ void pfd_eval (std::vector<std::vector<int> > A, int n) {
             
         }
 /*
-        for ( int j = 0; j< n ; j++ ) {
+        for ( int j = 0; j< n ; ++j ) {
             for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
                 std::cout << *it << ' ';
             cout << endl;
         }
  */
 
-       cout << "Final output" << endl;
-        for( std::vector<int>::const_iterator it = outputArray.begin(); it != outputArray.end(); ++it)
-                std::cout << *it << ' ';
-	cout << endl;
+      
+    return outputArray;
 }
 
 // print
-
+void pfd_print(std::ostream& w, const std::vector<int>& out){
+     cout << "Final output" << endl;
+        for( std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it)
+                std::cout << *it << ' ';
+    cout << endl;
+}
 
 // solve
 void pfd_solve(istream& r, ostream& w){
@@ -110,5 +114,6 @@ void pfd_solve(istream& r, ostream& w){
    cout << "In function solve" << endl;
 
 
-    pfd_eval(pfd_read(r, n, m), n) ;
+    std::vector<int> out = pfd_eval(pfd_read(r, n, m), n);
+    pfd_print(w, out);
 }
