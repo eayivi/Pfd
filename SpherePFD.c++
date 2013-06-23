@@ -56,41 +56,44 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
 // ------------
 
 void pfd_eval (std::vector<std::vector<int> > A, int n) {
-	//        cout << "n is " << n << endl;
-	//        cout << "Printing the matrix" << endl;
-	
-	//        for ( int j = 0; j< n ; j++ ) {
-	//            for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
-	//                std::cout << *it << ' ';
-	//            cout << endl;
-	//        }
-	std::vector<int> outputArray;
-	for ( int j = 0; j< n ; j++ ) {
-		if (A[j][0] == -1) continue;
-		for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it) {
-			//std::cout << *it << ' ';
-			if (*it) break;
-			if (it == A[j].end() -1) {                    
-				outputArray.push_back(j+1);
-				for(int k = 0; k<n; k++)
-					A[k].at(j) = 0;
-				A[j][0]= -1;
-				j = 0;
-			}
-		}
-		
-	}
-	/*
-	 for ( int j = 0; j< n ; j++ ) {
-	 for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
-	 std::cout << *it << ' ';
-	 cout << endl;
-	 }
-	 */
-	
-	//        cout << "Final output" << endl;
-	for( std::vector<int>::const_iterator it = outputArray.begin(); it != outputArray.end(); ++it)
-		std::cout << *it << ' ';
+       // cout << "n is " << n << endl;
+/*       cout << "Printing the matrix" << endl;
+        
+       for ( int j = 0; j< n ; j++ ) {
+           for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
+               std::cout << *it << ' ';
+           cout << endl;
+       }*/
+        std::vector<int> outputArray;
+        std::vector<int>::const_iterator it;
+        for ( int j = 0; j< n ; j++ ) {
+            if (A[j][0] == -1) continue;
+            for(it = A[j].begin(); it != A[j].end(); ++it) {
+                //std::cout << *it << ' ';
+                if (*it) break;
+                if (it == A[j].end() -1) {                    
+                    outputArray.push_back(j+1);
+                    for(int k = 0; k<n; k++){
+                        if(A[k].at(j) != -1)
+                            A[k].at(j) = 0;
+                    }
+                    A[j][0]= -1;
+                    j = -1;
+                }
+            }
+            
+        }
+/*
+        for ( int j = 0; j< n ; j++ ) {
+            for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
+                std::cout << *it << ' ';
+            cout << endl;
+        }
+ */
+
+       // cout << "Final output" << endl;
+        for( std::vector<int>::const_iterator it = outputArray.begin(); it != outputArray.end(); ++it)
+                std::cout << *it << ' ';
 	cout << endl;
 }
 
