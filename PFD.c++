@@ -7,9 +7,36 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <queue>
+#include <algorithm>
+#include <functional>
 #include "PFD.h"
 
 using namespace std;
+
+struct Vertex{
+    int number;
+    int num_deps;
+    std::vector<int> edges_in;
+
+    Vertex(int n, int d, std::vector<int> e) : number(n), num_deps(d){
+        std::vector<int> edges_in = e;
+    }
+
+    Vertex(int n, int d) : number(n), num_deps(d){
+        std::vector<int> edges_in (d, 0);
+    }
+
+};
+
+bool operator < (const Vertex& x, const Vertex& y) {
+    if(x.num_deps < y.num_deps)
+        return true;
+    else if(x.num_deps == y.num_deps)
+        if(x.number < y.number)
+            return true;
+    return false;
+}
 
 //read
 std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
@@ -27,11 +54,13 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
     cout << "n is " << n << " m is " << m << endl;
 
     std::vector<std::vector<int> > adj_matrix (n, std::vector<int>(n, 0));
+    std::priority_queue<Vertex> graph;
 
 
     int vertex;
     int deps;   // number of dependencies per task as given in rule
     int value;
+    std::vector<int> dependencies;
     while (rules > 0){
         // cout << "In first while m =" << m << endl;
         r >> vertex;
@@ -40,12 +69,16 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
         while(deps > 0){
            // cout << "In second while deps =" << deps << endl;
             r >> value;
-            adj_matrix[(vertex - 1)].at(value-1) = 1;
+            dependencies.push_back(value);
+//            adj_matrix[(vertex - 1)].at(value-1) = 1;
             --deps;
         }
+        graph.push(Vertex(vertex, deps, dependencies));
+        dependencies.clear();
+        int x = graph.top().number;
+        cout << "graph num " << x << endl;
         --rules; 
     }
-
 
 
 
