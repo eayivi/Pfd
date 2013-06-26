@@ -1,15 +1,8 @@
 TestPFD.c++
-..F.
+............
 
 
-!!!FAILURES!!!
-Test Results:
-Run:  3   Failures: 1   Errors: 0
-
-
-1) test: TestPFD::test_read_2 (F) line: 70 TestPFD.c++
-assertion failed
-- Expression: v[2].num_deps == 2
+OK (12 tests)
 
 
 Done.

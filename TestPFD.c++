@@ -99,7 +99,7 @@ struct TestPFD : CppUnit::TestFixture {
         int m;
         std::vector<Vertex> v = pfd_read(r, n, m);
         std::vector<int> check = {1, 5, 3, 2, 4};
-        std::vector<int> out = pfd_eval(v, n);
+        std::vector<int> out = pfd_eval(v);
         for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
             CPPUNIT_ASSERT(*it == check.front());
              check.erase(check.begin());
@@ -112,7 +112,7 @@ struct TestPFD : CppUnit::TestFixture {
         int m;
         std::vector<Vertex> v = pfd_read(r, n, m);
         std::vector<int> check = {1, 3, 4, 5, 2};
-        std::vector<int> out = pfd_eval(v, n);
+        std::vector<int> out = pfd_eval(v);
         for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
             CPPUNIT_ASSERT(*it == check.front());
             check.erase(check.begin());
@@ -127,7 +127,7 @@ struct TestPFD : CppUnit::TestFixture {
         std::vector<int> check = {1, 4, 2, 3, 5, 6, 7, 8};
         CPPUNIT_ASSERT(n ==   8);
         CPPUNIT_ASSERT(m ==   6);
-        std::vector<int> out = pfd_eval(v, n);
+        std::vector<int> out = pfd_eval(v);
         for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
             CPPUNIT_ASSERT(*it == check.front());
             check.erase(check.begin());

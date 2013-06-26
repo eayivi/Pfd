@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include <vector>
-#include <queue>
 
 struct Vertex{
     int number;
@@ -47,7 +46,7 @@ std::vector<Vertex> pfd_read (std::istream&, int&, int&);
  * @param 
  *
  */
-std::vector<int> pfd_eval (std::vector<Vertex>&, int);
+std::vector<int> pfd_eval (std::vector<Vertex>&);
 
 /**
  * pdf_print
