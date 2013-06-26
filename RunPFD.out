@@ -1,15 +1,1 @@
-In function solve
-In function read
-n is 5 m is 4
-graph num 3
-graph num 3
-graph num 4
-graph num 5
-Printing the matrix
-0 0 0 0 0 
-0 0 0 0 0 
-0 0 0 0 0 
-0 0 0 0 0 
-0 0 0 0 0 
-Final output
-1 2 3 4 5 
+1 5 3 2 4 

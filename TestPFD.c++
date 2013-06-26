@@ -48,19 +48,15 @@ struct TestPFD : CppUnit::TestFixture {
         std::istringstream r("4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
         int n = 5;
         int m;
-        const std::vector<std::vector<int> > adj = pfd_read(r, n, m);
+        const std::vector<Vertex> v = pfd_read(r, n, m);
        // CPPUNIT_ASSERT(b == true);
         CPPUNIT_ASSERT(n ==   5);
         CPPUNIT_ASSERT(m ==   4);
-        CPPUNIT_ASSERT(adj[2][0] == 1);    //node 3 has a dependency of 1 true
-        CPPUNIT_ASSERT(adj[2][4] == 1);    //node 3 has a dependency of 5 true
-
-        CPPUNIT_ASSERT(adj[1][4] == 1);    //node 2 has a dependency of 5 true
-        CPPUNIT_ASSERT(adj[1][2] == 1);    //node 2 has a dependency of 3 true
-
-        CPPUNIT_ASSERT(adj[3][2] == 1);    //node 4 has a dependency of 3 true
-
-        CPPUNIT_ASSERT(adj[4][0] == 1);    //node 5 has a dependency of 1 true
+        CPPUNIT_ASSERT(v[0].num_deps == 0);    //node 1 has no dependencies
+        CPPUNIT_ASSERT(v[1].num_deps == 2);    //node 2 has 2 dependencies
+        CPPUNIT_ASSERT(v[2].num_deps == 2);    //node 3 has 2 dependencies
+        CPPUNIT_ASSERT(v[3].num_deps == 1);    //node 4 has 1 dependency
+        CPPUNIT_ASSERT(v[4].num_deps == 1);    //node 5 has 1 dependency
     }
 
 
@@ -68,12 +64,12 @@ struct TestPFD : CppUnit::TestFixture {
         std::istringstream r("4\n3 1 1\n2 2 5 3\n4 1 3\n5 1 1");
         int n = 5;
         int m;
-        const std::vector<std::vector<int> > adj = pfd_read(r, n, m);
+        const std::vector<Vertex> v = pfd_read(r, n, m);
         CPPUNIT_ASSERT(n ==   5);
         CPPUNIT_ASSERT(m ==   4);
-        CPPUNIT_ASSERT(adj[2][4] == 0);     //node 3 has a dependency of 1 false
+        CPPUNIT_ASSERT(v[2].num_deps == 2);    //node 3 has 2 dependencies
         for(int i = 0; i < n; ++i)          // node 1 has 0 dependencies
-            CPPUNIT_ASSERT(adj[0][i] == 0);
+            CPPUNIT_ASSERT(v[0].edges_in[i] == 0);
     }
 
     
@@ -94,9 +90,9 @@ struct TestPFD : CppUnit::TestFixture {
         std::istringstream r("4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
         int n = 5;
         int m;
-        const std::vector<std::vector<int> > adj = pfd_read(r, n, m);
+        std::vector<Vertex> v = pfd_read(r, n, m);
         std::vector<int> check = {1, 5, 3, 2, 4};
-        std::vector<int> out = pfd_eval(adj, n);
+        std::vector<int> out = pfd_eval(v, n);
         for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
             CPPUNIT_ASSERT(*it == check.front());
             check.erase(check.begin());

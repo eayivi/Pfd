@@ -1,0 +1,83 @@
+commit 081f08bcc3334325b63b71be351f101ac1eb76ee
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Tue Jun 25 22:45:26 2013 -0500
+
+    succesfully organize container
+
+commit 9e67915d54409b929ee424586d8f472eb3e68790
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Tue Jun 25 21:02:43 2013 -0500
+
+    Push to pull.
+
+commit f1ce91e977838b440795a3fba6f25ba883237b26
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Tue Jun 25 20:26:46 2013 -0500
+
+    Still working with struct, and now a vector in place of a priority queue.`
+
+commit 667762e2d5b84355187f62d9325bc5ca7483a2ac
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Mon Jun 24 14:43:13 2013 -0500
+
+    Testing code for using a struct and overloaded operator < for pqueue.
+
+commit c71ddaaf46964701bcffe44d1a80468f40bda351
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Sat Jun 22 23:47:01 2013 -0500
+
+    Added trial Acceptance_generator, modified pfd_print() in files. Updated PFD.h.
+
+commit 83d86ab856b95ad9d4f12c69c1ee90fe078be15a
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Sat Jun 22 19:31:22 2013 -0500
+
+    Changed pfd_eval: no longer overwriting deleted nodes. Sphere accepted. fixes #12
+
+commit 2f24f70640c75ea024bc4b8142f1027cf9d4b5d0
+Author: sophieher <soph1her@cs.utexas.edu>
+Date:   Fri Jun 21 11:26:42 2013 -0500
+
+    Commented out print statements and compiled SpherePFD.c++ to submit:Wrong Answer
+
+commit 6eb9272d2740d043b319431c40fb5c85339d9dc9
+Author: eayivi <enam.ayivi@utexas.edu>
+Date:   Thu Jun 20 22:00:59 2013 -0500
+
+    Code is working without cache
+
+commit aef58a979eb9747ab6e1969394bc29332d0f3263
+Author: eayivi <enam.ayivi@utexas.edu>
+Date:   Thu Jun 20 20:55:25 2013 -0500
+
+    Successful reading
+
+commit d1977f3e0608008ea2a27463484eb04c867f68aa
+Author: eayivi <enam.ayivi@utexas.edu>
+Date:   Thu Jun 20 19:56:46 2013 -0500
+
+    create empty SpherePFD.c++ and implemented RunPFD.c++
+
+commit abd094ed9ec9bf7e248faf47871403bb95a06b2f
+Author: eayivi <enam.ayivi@utexas.edu>
+Date:   Thu Jun 20 19:48:05 2013 -0500
+
+    Implement test file skeleton fixes #10
+
+commit 11b26202a74b423ffefab33a3f5fc92f58f954b6
+Author: Sophia Hernandez <soph1her@cs.utexas.edu>
+Date:   Wed Jun 19 19:45:06 2013 -0500
+
+    Changed comments for my name and Enam's. Began pdf_solve() with 2D vector.
+
+commit 1ec4d8017cb04bae1f9d2ed479f76a48faf25997
+Author: sophieher <soph1her@cs.utexas.edu>
+Date:   Tue Jun 18 20:54:31 2013 -0500
+
+    Adding empty files to be modified and submitted.
+
+commit f9800169a236615c53ee219d7a8f5dc98de0e271
+Author: Sophie Hernandez <soph1her@cs.utexas.edu>
+Date:   Tue Jun 18 18:34:09 2013 -0700
+
+    Initial commit
