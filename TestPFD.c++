@@ -45,8 +45,8 @@ struct TestPFD : CppUnit::TestFixture {
     // ----
 
     void test_read_1 () {
-        std::istringstream r("4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
-        int n = 5;
+        std::istringstream r("5 4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
+        int n;
         int m;
         const std::vector<Vertex> v = pfd_read(r, n, m);
        // CPPUNIT_ASSERT(b == true);
@@ -61,37 +61,57 @@ struct TestPFD : CppUnit::TestFixture {
 
 
     void test_read_2 () {
-        std::istringstream r("4\n3 1 1\n2 2 5 3\n4 1 3\n5 1 1");
-        int n = 5;
+        std::istringstream r("5 4\n3 1 1\n2 2 5 3\n4 1 3\n5 1 1");
+        int n;
         int m;
         const std::vector<Vertex> v = pfd_read(r, n, m);
         CPPUNIT_ASSERT(n ==   5);
         CPPUNIT_ASSERT(m ==   4);
-        CPPUNIT_ASSERT(v[2].num_deps == 2);    //node 3 has 2 dependencies
-        for(int i = 0; i < n; ++i)          // node 1 has 0 dependencies
-            CPPUNIT_ASSERT(v[0].edges_in[i] == 0);
+        CPPUNIT_ASSERT(v[2].num_deps == 1);    //node 3 has 1 dependency
+        CPPUNIT_ASSERT(v[0].edges_in.size() == 0);
     }
 
     
-/*    void test_read_3 () {
-        std::istringstream r("55 22\n");
-        int i;
-        int j;
-        const bool b = pfd_read(r, i, j);
-        CPPUNIT_ASSERT(b == true);
-        CPPUNIT_ASSERT(i ==    55);
-        CPPUNIT_ASSERT(j ==   22);}*/
+    void test_read_3 () {
+        std::istringstream r("8 6 \n2 1 4\n3 1 2\n5 2 1 4\n8 2 4 1\n6 1 4\n4 1 1");
+        int n;
+        int m;
+        const std::vector<Vertex> v = pfd_read(r, n, m);
+        CPPUNIT_ASSERT(n ==   8);
+        CPPUNIT_ASSERT(m ==   6);
+        CPPUNIT_ASSERT(v[1].num_deps == 1);    //node 2 has 1 dependency
+        CPPUNIT_ASSERT(v[2].num_deps == 1);    //node 3 has 1 dependency
+        CPPUNIT_ASSERT(v[3].num_deps == 1);    //node 4 has 1 dependency
+        CPPUNIT_ASSERT(v[4].num_deps == 2);    //node 5 has 1 dependency
+        CPPUNIT_ASSERT(v[5].num_deps == 1);    //node 6 has 1 dependency
+        CPPUNIT_ASSERT(v[6].num_deps == 0);    //node 7 has 1 dependency
+        CPPUNIT_ASSERT(v[7].num_deps == 2);    //node 8 has 2 dependency
+        CPPUNIT_ASSERT(v[7].edges_in.size() == 2);
+    }
 
     // ----
     // eval
     // ----
 
     void test_eval_1 () {
-        std::istringstream r("4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
-        int n = 5;
+        std::istringstream r("5 4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
+        int n;
         int m;
         std::vector<Vertex> v = pfd_read(r, n, m);
         std::vector<int> check = {1, 5, 3, 2, 4};
+        std::vector<int> out = pfd_eval(v, n);
+        for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
+            CPPUNIT_ASSERT(*it == check.front());
+             check.erase(check.begin());
+        }
+    }
+
+    void test_eval_2 () {
+        std::istringstream r("5 4\n3 1 1 \n2 2 5 3\n4 1 3\n5 1 1");
+        int n;
+        int m;
+        std::vector<Vertex> v = pfd_read(r, n, m);
+        std::vector<int> check = {1, 3, 4, 5, 2};
         std::vector<int> out = pfd_eval(v, n);
         for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
             CPPUNIT_ASSERT(*it == check.front());
@@ -99,49 +119,66 @@ struct TestPFD : CppUnit::TestFixture {
         }
     }
 
-/*    void test_eval_2 () {
-        const int v = pfd_eval(100, 200);
-        CPPUNIT_ASSERT(v == 125);}
-
     void test_eval_3 () {
-        const int v = pfd_eval(201, 210);
-        CPPUNIT_ASSERT(v == 89);}
+        std::istringstream r("8 6 \n2 1 4\n3 1 2\n5 2 1 4\n8 2 4 1\n6 1 4\n4 1 1");
+        int n;
+        int m;
+        std::vector<Vertex> v = pfd_read(r, n, m); 
+        std::vector<int> check = {1, 4, 2, 3, 5, 6, 7, 8};
+        CPPUNIT_ASSERT(n ==   8);
+        CPPUNIT_ASSERT(m ==   6);
+        std::vector<int> out = pfd_eval(v, n);
+        for(std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it){
+            CPPUNIT_ASSERT(*it == check.front());
+            check.erase(check.begin());
+        }
+    }
 
-    void test_eval_4 () {
-        const int v = pfd_eval(900, 1000);
-        CPPUNIT_ASSERT(v == 174);}
 
     // -----
     // print
     // -----
 
     void test_print_1 () {
+        std::vector<int> check = {1, 4, 2, 6, 7, 8};
         std::ostringstream w;
-        pfd_print(w);
-        CPPUNIT_ASSERT(w.str() == "11 101 201\n");}
+        pfd_print(w, check);
+        CPPUNIT_ASSERT(w.str() == "1 4 2 6 7 8 \n");}
 
     void test_print_2 () {
+        std::vector<int> check = {3, 2, 1, 5};    
         std::ostringstream w;
-        pfd_print(w);
-        CPPUNIT_ASSERT(w.str() == "1 10 20\n");}
-        
+        pfd_print(w, check);
+        CPPUNIT_ASSERT(w.str() == "3 2 1 5 \n");}
+
+    void test_print_3 () {
+        std::vector<int> check = {0};
+        std::ostringstream w;
+        pfd_print(w, check);
+        CPPUNIT_ASSERT(w.str() == "0 \n");}
+
         
     // -----
     // solve
     // -----
-
     void test_solve_1 () {
-        std::istringstream r("1 10\n100 200\n201 210\n900 1000\n");
+        std::istringstream r("5 4\n3 2 1 5\n2 2 5 3\n4 1 3\n5 1 1");
         std::ostringstream w;
         pfd_solve(r, w);
-        CPPUNIT_ASSERT(w.str() == "1 10 20\n100 200 125\n201 210 89\n900 1000 174\n");}
-        
+        CPPUNIT_ASSERT(w.str() == "1 5 3 2 4 \n");}
+
     void test_solve_2 () {
-        std::istringstream r("5 5\n1 1\n987 987\n54 12\n");
+        std::istringstream r("1 0");
         std::ostringstream w;
         pfd_solve(r, w);
-        CPPUNIT_ASSERT(w.str() == "5 5 6\n1 1 1\n987 987 37\n54 12 113\n");}
-*/
+        CPPUNIT_ASSERT(w.str() == "1 \n");}
+                
+    void test_solve_3 () {
+        std::istringstream r("8 6 \n2 1 4\n3 1 2\n5 2 1 4\n8 2 4 1\n6 1 4\n4 1 1");
+        std::ostringstream w;
+        pfd_solve(r, w);
+        CPPUNIT_ASSERT(w.str() == "1 4 2 3 5 6 7 8 \n");}
+
 
     // -----
     // suite
@@ -150,15 +187,16 @@ struct TestPFD : CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(TestPFD);
     CPPUNIT_TEST(test_read_1);
     CPPUNIT_TEST(test_read_2);
-//    CPPUNIT_TEST(test_read_3);
+    CPPUNIT_TEST(test_read_3);
     CPPUNIT_TEST(test_eval_1);
-/*    CPPUNIT_TEST(test_eval_2);
+    CPPUNIT_TEST(test_eval_2);
     CPPUNIT_TEST(test_eval_3);
-    CPPUNIT_TEST(test_eval_4);
     CPPUNIT_TEST(test_print_1);
     CPPUNIT_TEST(test_print_2);
+    CPPUNIT_TEST(test_print_3);
     CPPUNIT_TEST(test_solve_1);
-    CPPUNIT_TEST(test_solve_2);*/
+    CPPUNIT_TEST(test_solve_2);
+    CPPUNIT_TEST(test_solve_3); 
     CPPUNIT_TEST_SUITE_END();};
 
 // ----

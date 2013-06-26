@@ -46,12 +46,13 @@ std::vector<Vertex> pfd_read(std::istream& r, int& n, int& m){
    // cout << "In function read" << endl;
     // if(!r)
     //     return false;
+    r >> n;
     r >> m;
     // if(!r)
     //     return false;
     
     assert(n > 0);
-    assert(m > 0);
+    assert(m >= 0);
     int rules = m;
 
    // cout << "n is " << n << " m is " << m << endl;
@@ -167,14 +168,13 @@ std::vector<int> pfd_eval (std::vector<Vertex>& graph, int n) {
 void pfd_print(std::ostream& w, const std::vector<int>& out){
  //    cout << "Final output" << endl;
         for( std::vector<int>::const_iterator it = out.begin(); it != out.end(); ++it)
-                std::cout << *it << ' ';
-    cout << endl;
+                w << *it << ' ';
+    w << endl;
 }
 
 // solve
 void pfd_solve(istream& r, ostream& w){
-    int n; // N tasks
-    r >> n;
+    int n = 0; // N tasks   
     int m; // M rules
         
    // cout << "In function solve" << endl;
