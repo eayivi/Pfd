@@ -8,13 +8,14 @@
 #include <cassert>
 #include <vector>
 #include <queue>
+#include <list>
 #include <algorithm>
 #include <functional>
 #include "PFD.h"
 
 using namespace std;
 
-struct Vertex{
+/*struct Vertex{
     int number;
     int num_deps;
     std::vector<int> edges_in;
@@ -27,19 +28,21 @@ struct Vertex{
         std::vector<int> edges_in (d, 0);
     }
 
-};
+};*/
 
 bool operator < (const Vertex& x, const Vertex& y) {
     if(x.num_deps < y.num_deps)
-        return true;
-    else if(x.num_deps == y.num_deps)
-        if(x.number < y.number)
-            return true;
-    return false;
+        return false;
+    else if(x.num_deps == y.num_deps){
+        if(x.number < y.number){
+            return false;
+        }
+    }
+    return true;
 }
 
 //read
-std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
+std::vector<Vertex> pfd_read(std::istream& r, int& n, int& m){
     cout << "In function read" << endl;
     // if(!r)
     //     return false;
@@ -53,9 +56,14 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
 
     cout << "n is " << n << " m is " << m << endl;
 
-    std::vector<std::vector<int> > adj_matrix (n, std::vector<int>(n, 0));
-    std::priority_queue<Vertex> graph;
-
+//    std::vector<std::vector<int> > adj_matrix (n, std::vector<int>(n, 0));
+    std::vector<Vertex> graph;
+    std::list<int> v_number;
+    int d = 1;
+    while(d <= n){
+        v_number.push_back(d);
+        ++d;
+    }
 
     int vertex;
     int deps;   // number of dependencies per task as given in rule
@@ -65,24 +73,29 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
         // cout << "In first while m =" << m << endl;
         r >> vertex;
         r >> deps;
-
-        while(deps > 0){
+        v_number.remove(vertex);
+        int c = deps;
+        while(c > 0){
            // cout << "In second while deps =" << deps << endl;
             r >> value;
             dependencies.push_back(value);
 //            adj_matrix[(vertex - 1)].at(value-1) = 1;
-            --deps;
+            --c;
         }
-        graph.push(Vertex(vertex, deps, dependencies));
+        graph.push_back(Vertex(vertex, deps, dependencies));
         dependencies.clear();
-        int x = graph.top().number;
+        int x = graph.back().number;
         cout << "graph num " << x << endl;
         --rules; 
     }
-
-
-
-    return adj_matrix;
+    while(!v_number.empty()){
+        vertex = v_number.back();
+        graph.push_back(Vertex(vertex));
+        v_number.pop_back();
+    }
+    std::make_heap(graph.begin(), graph.end());
+//    return adj_matrix;
+    return graph;
 }
 
 
@@ -90,18 +103,33 @@ std::vector<std::vector<int> > pfd_read(std::istream& r, int& n, int& m){
 // pfd_eval
 // ------------
 
-std::vector<int> pfd_eval (std::vector<std::vector<int> > A, int n) {
+std::vector<int> pfd_eval (std::vector<Vertex>& graph, int n) {
        // cout << "n is " << n << endl;
-       cout << "Printing the matrix" << endl;
+//       cout << "Printing the matrix" << endl;
         
-       for ( int j = 0; j< n ; ++j ) {
+/*       for ( int j = 0; j< n ; ++j ) {
            for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
                std::cout << *it << ' ';
            cout << endl;
-       }
+       }*/
         std::vector<int> outputArray;
-        std::vector<int>::const_iterator it;
-        for ( int j = 0; j< n ; ++j ) {
+        std::vector<Vertex>::const_iterator it;
+        std::vector<int>::const_iterator edge_it;
+        while(!graph.empty()){
+            outputArray.push_back(graph.back().number);
+            cout << graph.back().number << " checking the graph, ";
+            cout << graph.back().num_deps << " and its deps" << endl;
+            for(it = graph.begin(); it != graph.end(); ++it){
+                for(edge_it = it->edges_in.begin(); 
+                    edge_it != it->edges_in.end(); ++edge_it){
+                    if(graph.back().number == *edge_it)
+                        --((*it).num_deps);
+                }
+            }
+            graph.pop_back();
+            std::make_heap(graph.begin(), graph.end());
+        }
+/*        for ( int j = 0; j< n ; ++j ) {
             if (A[j][0] == -1) continue;
             for(it = A[j].begin(); it != A[j].end(); ++it) {
                 //std::cout << *it << ' ';
@@ -117,7 +145,7 @@ std::vector<int> pfd_eval (std::vector<std::vector<int> > A, int n) {
                 }
             }
             
-        }
+        }*/
 /*
         for ( int j = 0; j< n ; ++j ) {
             for( std::vector<int>::const_iterator it = A[j].begin(); it != A[j].end(); ++it)
@@ -144,9 +172,9 @@ void pfd_solve(istream& r, ostream& w){
     r >> n;
     int m; // M rules
         
-   cout << "In function solve" << endl;
+    cout << "In function solve" << endl;
 
-
-    std::vector<int> out = pfd_eval(pfd_read(r, n, m), n);
+    std::vector<Vertex> v = pfd_read(r, n, m);
+    std::vector<int> out = pfd_eval(v, n);
     pfd_print(w, out);
 }
