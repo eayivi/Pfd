@@ -32,13 +32,13 @@ using namespace std;
 
 bool operator < (const Vertex& x, const Vertex& y) {
     if(x.num_deps < y.num_deps)
-        return false;
+        return true;
     else if(x.num_deps == y.num_deps){
         if(x.number < y.number){
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 //read
@@ -58,6 +58,8 @@ std::vector<Vertex> pfd_read(std::istream& r, int& n, int& m){
 
 //    std::vector<std::vector<int> > adj_matrix (n, std::vector<int>(n, 0));
     std::vector<Vertex> graph;
+    
+    // container to hold range of numbers for vertices that have 0 dependencies
     std::list<int> v_number;
     int d = 1;
     while(d <= n){
@@ -122,12 +124,15 @@ std::vector<int> pfd_eval (std::vector<Vertex>& graph, int n) {
             for(it = graph.begin(); it != graph.end(); ++it){
                 for(edge_it = it->edges_in.begin(); 
                     edge_it != it->edges_in.end(); ++edge_it){
-                    if(graph.back().number == *edge_it)
+                    if(graph.back().number == *edge_it){
+                        cout << "in the edges" << endl;
                         --((*it).num_deps);
+                    }
                 }
             }
             graph.pop_back();
             std::make_heap(graph.begin(), graph.end());
+
         }
 /*        for ( int j = 0; j< n ; ++j ) {
             if (A[j][0] == -1) continue;
