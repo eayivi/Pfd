@@ -4,10 +4,10 @@
  * Enam Ayivi aea787
  */
 
-#include <iostream>
-#include <cassert>
-#include <vector>
-#include <algorithm>
+#include <iostream>  // endl, istream, ostream
+#include <cassert>  // assert
+#include <vector>   // vector <Vertex>
+#include <algorithm> // operator
 #include <functional>
 #include "PFD.h"
 
@@ -28,6 +28,10 @@ using namespace std;
 
 };*/
 
+// ------------
+// operator, to compare vertices
+// ------------
+
 bool operator < (const Vertex& x, const Vertex& y) {
     assert(x.num_deps > -1);
     assert(y.num_deps > -1);
@@ -42,7 +46,10 @@ bool operator < (const Vertex& x, const Vertex& y) {
     return true;
 }
 
-//read
+// ------------
+// pfd_read
+// ------------
+
 std::vector<Vertex> pfd_read(std::istream& r, int& n, int& m){
 
     r >> n;
@@ -118,7 +125,10 @@ std::vector<int> pfd_eval (std::vector<Vertex>& graph) {
     return outputArray;
 }
 
-// print
+// -------------
+// pfd_print
+// -------------
+
 void pfd_print(std::ostream& w, const std::vector<int>& out){
     assert(out.size() != 0);
 
@@ -127,7 +137,10 @@ void pfd_print(std::ostream& w, const std::vector<int>& out){
     w << endl;
 }
 
-// solve
+// -------------
+// pfd_solve
+// -------------
+
 void pfd_solve(istream& r, ostream& w){
     int n = 0; // N tasks   
     int m; // M rules
